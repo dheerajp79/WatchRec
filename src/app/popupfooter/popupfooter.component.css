@@ -1,0 +1,10 @@
+
+.popupfooter
+{
+  overflow: auto;
+  margin-left: 60%;
+}
+
+li{
+  display: inline;
+}

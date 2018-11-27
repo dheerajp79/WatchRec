@@ -1,0 +1,19 @@
+textarea{
+  width: 100%;
+  
+}
+li{
+  display: inline;
+}
+
+li input
+{
+  border:none;
+}
+
+.moveright
+{
+  margin-left: 20%;
+}
+
+

@@ -1,0 +1,152 @@
+﻿<div class="col-md-6 col-md-offset-3">
+    <h1>Home</h1>
+    <button (click)="openme(content)">Open Modal 1</button>
+</div>
+<ng-template #content>
+    <form class="popupform" name="popup">
+        <strong class="modal-title">{{maintitle}}</strong>
+        <button type="button" class="close" aria-label="Close" (click)="closeme()">
+            &otimes;
+        </button>
+    <fieldset class="modal-header">
+        <p>{{patentno}}</p>
+        <p>{{patentdesc}}</p>
+    </fieldset>
+    <ngb-tabset [justify]="justify">
+        <div class="modal-body" *ngFor="let title of tabs">
+            <ngb-tab [title]="title">
+              <ng-template ngbTabContent>
+                  <div *ngIf="title==='Setting'">
+                    <fieldset>
+                        <p aria-label="describe">{{titledata.data.DESCRIPTION}}</p>
+                        <textarea maxlength="256"></textarea>
+                        <li>{{titledata.data.OWNER}}     </li><li><input name="owner" type="text" [disabled]="own_dis" [(ngModel)]="ownername"></li>
+                    </fieldset>
+                    <fieldset>
+                        <b><label>{{titledata.data.TRIGGER_EVENTS}}</label></b>
+                        <br>
+                            <label>{{titledata.data.STANDARD}}</label>
+                            <input type="radio" class="moveright" #triall value="true" (change)="triselected(triall)" name="triall">{{titledata.data.SELECT_ALL}}
+                            <input type="radio" #trinone class="moveright" value="false" (change)="triselected(trinone)" name="triall">{{titledata.data.CLEAR_ALL}}
+                        <br>
+                            <li *ngFor="let triger of testdata.data.standard;let i=index">
+                                <input type="checkbox" [(ngModel)]="triger.checked" [value]="triger.value" (change)="some_change(triger,$event)" name="trigger_events">{{triger.name}}
+                            </li>
+                        <br>
+                        <br>
+                            <label>{{titledata.data.LEGAL_CODE}}</label>
+
+                            <input type="radio" class="moveright" #ligall value="true" (change)="legalselected(ligall)" name="lelall">{{titledata.data.SELECT_ALL}}
+                            <input type="radio" #lignone class="moveright" value="false" (change)="legalselected(lignone)" name="lelall">{{titledata.data.CLEAR_ALL}}
+                        
+                        <br>
+                            
+                            <li *ngFor="let legal of testdata.data.Legal_code;let i=index">
+                                    <input type="checkbox" [(ngModel)]="legal.checked" [value]="legal.value" (change)="some_change(legal,$event)" name="legal_code">{{legal.name}}
+                            </li>
+
+                    </fieldset>
+                    <hr>
+                    <fieldset>
+                        <li>
+                            <input type="checkbox" #personal name="save_personal">
+                             {{titledata.data.SAVE_PERSONAL}}&nbsp;&nbsp;
+                            <input type="file" [disabled]="!personal.checked" class="btn btn-sm float-right">
+                        </li>
+                            <br>
+                            <br>
+                            <br>
+                        <li><input type="checkbox" #public name="share_public">&nbsp;&nbsp;{{titledata.data.SHARE_PUBLIC}}&nbsp;&nbsp;<input type="file" [disabled]="!public.checked" class="btn btn-sm float-right">
+                        </li>
+                            <br>
+                            <br>
+                            <br>
+                        <li>
+                                <input type="checkbox" #inbox name="share_public">&nbsp;&nbsp;
+                                {{titledata.data.SHARE_INBOX}}
+                                <button type="button" [disabled]="!inbox.checked" class="btn btn-sm float-middle">{{titledata.data.SELECT_RECIPIENTS}}</button>
+                        </li>
+                            <br>
+                            <br>
+                            <br>
+                        <li>
+                                <input type="checkbox" #mail name="share_mail">&nbsp;&nbsp;
+                                {{titledata.data.SHARE_MAIL}}
+                                <button type="button" [disabled]="!mail.checked" class="btn btn-sm float-middle">{{titledata.data.ADDEDIT}}</button>
+                        </li>
+                    </fieldset>
+                </div>
+                <div *ngIf="title==='Tracking'">
+                        <br>
+                        <br>
+                    <label>{{titledata.data.TRACKSUBTITLE}}</label>
+                        <br>
+                    <fieldset>
+                        <input type="radio" #clientref name="track">
+                        <span>{{titledata.data.NOCLIENTREF}}</span>
+                        <br>
+                        <br>
+                        <input type="radio" #userref name="track">
+                        <span>{{titledata.data.USERECREF}}</span>
+                        <select [(ngModel)]="recentrefmodal" [disabled]="!userref.checked" name="recentref">
+                            <option *ngFor="let data of recentref;let i=index" [ngValue]='data'>{{data}}</option>
+                        </select>
+                        <br>
+                        <br>
+                        <input type="radio" #newcliref name="track">
+                        <span>{{titledata.data.SETNEWREF}}</span>
+                        <br>
+                        <div style="display: inline-block;">
+                            &nbsp;&nbsp;
+                            <li><label for="cliseg">{{titledata.data.SETCLIENTSEG}}</label></li>&nbsp;
+                            <li><label for="projseg">{{titledata.data.SETPROJSEG}}</label></li>&nbsp;
+                            <li><label for="">{{titledata.data.SETSUBPROJSEG}}</label></li>
+                            <br>&nbsp;&nbsp;
+                            <li>
+                                <select [(ngModel)]="cliseg" (change)="segselectchange('cliseg')" #clisegele [disabled]="!newcliref.checked||clisegdis" name="cliseg">
+                                    <option *ngFor="let clsg of testdata.data.cliseg;let i=index" [ngValue]="clsg">{{clsg}}</option>
+                                </select>
+                            </li>
+                            <li>
+                                    <select [(ngModel)]="projseg" #projsegele (change)="segselectchange('projseg')" [disabled]="projsegdis" name="projseg">
+                                        <option *ngFor="let pjsg of testdata.data.projseg;let i=index" [ngValue]="pjsg">{{pjsg}}</option>
+                                    </select>
+                            </li>
+                            <li>
+                                    <select [(ngModel)]="subprojseg" #subprojsegele (change)="segselectchange('subprojseg')" [disabled]="subprojsegdis" name="subprojseg">
+                                        <option *ngFor="let supjsg of testdata.data.subprojseg;let i=index" [ngValue]="supjsg">{{supjsg}}</option>
+                                    </select>
+                            </li>
+                            <br><br>
+                            &nbsp;&nbsp;
+                            <li>
+                                <label for="newcliele">{{titledata.data.NEWCLI}}</label>
+                            </li>&nbsp;
+                            <li>
+                                <label for="newproj">{{titledata.data.NEWPROJ}}</label>
+                            </li>&nbsp;
+                            <li>
+                                <label for="newsubproj">{{titledata.data.NEWSUBPROJ}}</label>
+                            </li>
+
+                            <br>&nbsp;&nbsp;
+                                <input type="text" (click)="seginputclick('newcliele')" (keydown)="seginputchange('newcliele',$event)" (blur)="seginblur('newcliele')" name="newcliele" [disabled]="!newcliref.checked||newclidis"[(ngModel)]="newcli"/>
+
+                               <input type="text" (click)="seginputclick('newprojele')" (keydown)="seginputchange('newprojele',$event)" (blur)="seginblur('newprojele')" name="newprojele"[disabled]="newprojdis" 
+                               [(ngModel)]="newproj"/>
+
+                               <input type="text" (click)="seginputclick('newsubprojele')" (keydown)="seginputchange('newsubprojele',$event)" (blur)="seginblur('newsubprojele')" name="newsubprojele" [disabled]="newsubprojdis"
+                               [(ngModel)]="newsubproj"/>              
+
+                        </div>
+                    </fieldset>
+                </div>
+              </ng-template>
+            </ngb-tab>
+        </div>
+    </ngb-tabset>
+    
+    <footer-popup [idclose]='modalref'></footer-popup>
+    
+ </form>
+</ng-template>
